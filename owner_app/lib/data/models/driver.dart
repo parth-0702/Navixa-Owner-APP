@@ -9,6 +9,8 @@ class DriverSummary {
     this.onTimeRate = '98%',
     this.status = 'active',
     this.avatarUrl,
+    this.currentVehicleId,
+    this.currentVehicleName,
   });
 
   final String id;
@@ -20,8 +22,13 @@ class DriverSummary {
   final String onTimeRate;
   final String status;
   final String? avatarUrl;
+  final String? currentVehicleId;
+  final String? currentVehicleName;
 
   factory DriverSummary.fromJson(Map<String, dynamic> json) {
+    final currentVehicle = json['currentVehicle'] is Map<String, dynamic>
+        ? json['currentVehicle'] as Map<String, dynamic>
+        : null;
     return DriverSummary(
       id: json['id']?.toString() ?? json['_id']?.toString() ?? '',
       name: json['name']?.toString() ?? 'Assigned Driver',
@@ -32,6 +39,10 @@ class DriverSummary {
       onTimeRate: json['onTimeRate']?.toString() ?? '98%',
       status: json['status']?.toString() ?? 'active',
       avatarUrl: json['avatarUrl']?.toString(),
+      currentVehicleId: currentVehicle?['id']?.toString(),
+      currentVehicleName:
+          currentVehicle?['nickname']?.toString() ??
+          currentVehicle?['plateNumber']?.toString(),
     );
   }
 
@@ -46,6 +57,8 @@ class DriverSummary {
       'onTimeRate': onTimeRate,
       'status': status,
       'avatarUrl': avatarUrl,
+      'currentVehicleId': currentVehicleId,
+      'currentVehicleName': currentVehicleName,
     };
   }
 }

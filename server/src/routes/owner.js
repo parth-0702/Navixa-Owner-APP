@@ -39,6 +39,7 @@ router.get('/overview', async (req, res) => {
     let totalVehicles = vehicles.length;
     let movingCount = 0;
     let idleCount = 0;
+    let stoppedCount = 0;
     let parkedCount = 0;
     let offlineCount = 0;
     let maintenanceCount = 0;
@@ -57,6 +58,7 @@ router.get('/overview', async (req, res) => {
 
       if (effectiveStatus === 'moving') movingCount += 1;
       else if (effectiveStatus === 'idle') idleCount += 1;
+      else if (effectiveStatus === 'stopped') stoppedCount += 1;
       else if (effectiveStatus === 'parked') parkedCount += 1;
       else if (effectiveStatus === 'maintenance') maintenanceCount += 1;
       else offlineCount += 1;
@@ -122,6 +124,7 @@ router.get('/overview', async (req, res) => {
         total: totalVehicles,
         moving: movingCount,
         idle: idleCount,
+        stopped: stoppedCount,
         parked: parkedCount,
         offline: offlineCount,
         maintenance: maintenanceCount,

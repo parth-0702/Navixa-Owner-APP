@@ -23,6 +23,7 @@ class _FleetListScreenState extends State<FleetListScreen> {
     {'id': 'all', 'label': 'All'},
     {'id': 'moving', 'label': 'Moving'},
     {'id': 'idle', 'label': 'Idle'},
+    {'id': 'stopped', 'label': 'Stopped'},
     {'id': 'parked', 'label': 'Parked'},
     {'id': 'offline', 'label': 'Offline'},
     {'id': 'maintenance', 'label': 'In Shop'},
@@ -41,7 +42,8 @@ class _FleetListScreenState extends State<FleetListScreen> {
   }
 
   void _onScroll() {
-    if (_scrollController.position.pixels >= _scrollController.position.maxScrollExtent - 200) {
+    if (_scrollController.position.pixels >=
+        _scrollController.position.maxScrollExtent - 200) {
       context.read<FleetProvider>().loadMoreVehicles();
     }
   }
@@ -74,7 +76,10 @@ class _FleetListScreenState extends State<FleetListScreen> {
                 ListTile(
                   title: const Text('Last Updated Time'),
                   trailing: fleet.selectedSort == 'lastUpdated'
-                      ? const Icon(Icons.check_rounded, color: AppColors.secondaryTeal)
+                      ? const Icon(
+                          Icons.check_rounded,
+                          color: AppColors.secondaryTeal,
+                        )
                       : null,
                   onTap: () {
                     fleet.setSort('lastUpdated');
@@ -84,7 +89,10 @@ class _FleetListScreenState extends State<FleetListScreen> {
                 ListTile(
                   title: const Text('Vehicle Name & Plate'),
                   trailing: fleet.selectedSort == 'name'
-                      ? const Icon(Icons.check_rounded, color: AppColors.secondaryTeal)
+                      ? const Icon(
+                          Icons.check_rounded,
+                          color: AppColors.secondaryTeal,
+                        )
                       : null,
                   onTap: () {
                     fleet.setSort('name');
@@ -94,7 +102,10 @@ class _FleetListScreenState extends State<FleetListScreen> {
                 ListTile(
                   title: const Text('Operational Status'),
                   trailing: fleet.selectedSort == 'status'
-                      ? const Icon(Icons.check_rounded, color: AppColors.secondaryTeal)
+                      ? const Icon(
+                          Icons.check_rounded,
+                          color: AppColors.secondaryTeal,
+                        )
                       : null,
                   onTap: () {
                     fleet.setSort('status');
@@ -104,7 +115,10 @@ class _FleetListScreenState extends State<FleetListScreen> {
                 ListTile(
                   title: const Text("Today's Distance"),
                   trailing: fleet.selectedSort == 'distance'
-                      ? const Icon(Icons.check_rounded, color: AppColors.secondaryTeal)
+                      ? const Icon(
+                          Icons.check_rounded,
+                          color: AppColors.secondaryTeal,
+                        )
                       : null,
                   onTap: () {
                     fleet.setSort('distance');
@@ -126,7 +140,9 @@ class _FleetListScreenState extends State<FleetListScreen> {
     final fleet = context.watch<FleetProvider>();
 
     return Scaffold(
-      backgroundColor: isDark ? AppColors.darkPageBackground : AppColors.pageBackground,
+      backgroundColor: isDark
+          ? AppColors.darkPageBackground
+          : AppColors.pageBackground,
       appBar: AppBar(
         title: const Text('Fleet Vehicles'),
         actions: [
@@ -171,16 +187,22 @@ class _FleetListScreenState extends State<FleetListScreen> {
                   labelStyle: TextStyle(
                     color: isSelected
                         ? Colors.white
-                        : (isDark ? AppColors.darkPrimaryText : AppColors.primaryText),
+                        : (isDark
+                              ? AppColors.darkPrimaryText
+                              : AppColors.primaryText),
                     fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
                     fontSize: 12,
                   ),
-                  backgroundColor: isDark ? AppColors.darkSurfaceCard : AppColors.surfaceCard,
+                  backgroundColor: isDark
+                      ? AppColors.darkSurfaceCard
+                      : AppColors.surfaceCard,
                   selectedColor: AppColors.primaryNavy,
                   side: BorderSide(
                     color: isSelected
                         ? AppColors.primaryNavy
-                        : (isDark ? AppColors.darkBorder : AppColors.lightBorder),
+                        : (isDark
+                              ? AppColors.darkBorder
+                              : AppColors.lightBorder),
                   ),
                 );
               },
@@ -210,11 +232,15 @@ class _FleetListScreenState extends State<FleetListScreen> {
                 if (fleet.vehicles.isEmpty) {
                   return EmptyState(
                     title: 'No Vehicles Found',
-                    message: fleet.searchQuery.isNotEmpty || fleet.selectedStatus != 'all'
+                    message:
+                        fleet.searchQuery.isNotEmpty ||
+                            fleet.selectedStatus != 'all'
                         ? 'No vehicles match your active search or filters. Try adjusting your query.'
                         : 'Your fleet currently has no active vehicles registered.',
                     icon: Icons.local_shipping_outlined,
-                    actionLabel: fleet.searchQuery.isNotEmpty || fleet.selectedStatus != 'all'
+                    actionLabel:
+                        fleet.searchQuery.isNotEmpty ||
+                            fleet.selectedStatus != 'all'
                         ? 'Reset Filters'
                         : null,
                     onAction: () {

@@ -24,6 +24,8 @@ const notificationPreferenceSchema = new mongoose.Schema(
     overspeedAlerts: { type: Boolean, default: true },
     idleAlerts: { type: Boolean, default: true },
     geofenceAlerts: { type: Boolean, default: true },
+    routeDeviationAlerts: { type: Boolean, default: true },
+    lowFuelAlerts: { type: Boolean, default: true },
     offlineAlerts: { type: Boolean, default: true },
     maintenanceReminders: { type: Boolean, default: true },
   },

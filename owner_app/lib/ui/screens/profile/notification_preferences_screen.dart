@@ -10,10 +10,12 @@ class NotificationPreferencesScreen extends StatefulWidget {
   const NotificationPreferencesScreen({super.key});
 
   @override
-  State<NotificationPreferencesScreen> createState() => _NotificationPreferencesScreenState();
+  State<NotificationPreferencesScreen> createState() =>
+      _NotificationPreferencesScreenState();
 }
 
-class _NotificationPreferencesScreenState extends State<NotificationPreferencesScreen> {
+class _NotificationPreferencesScreenState
+    extends State<NotificationPreferencesScreen> {
   NotificationPreference? _currentPrefs;
   bool _hasChanges = false;
 
@@ -25,7 +27,8 @@ class _NotificationPreferencesScreenState extends State<NotificationPreferencesS
       await settings.loadPreferences();
       if (mounted) {
         setState(() {
-          _currentPrefs = settings.preferences ?? const NotificationPreference();
+          _currentPrefs =
+              settings.preferences ?? const NotificationPreference();
         });
       }
     });
@@ -40,7 +43,9 @@ class _NotificationPreferencesScreenState extends State<NotificationPreferencesS
 
   Future<void> _pickTime({required bool isStart}) async {
     if (_currentPrefs == null) return;
-    final currentStr = isStart ? _currentPrefs!.quietHoursStart : _currentPrefs!.quietHoursEnd;
+    final currentStr = isStart
+        ? _currentPrefs!.quietHoursStart
+        : _currentPrefs!.quietHoursEnd;
     final parts = currentStr.split(':');
     final initialTime = TimeOfDay(
       hour: int.tryParse(parts[0]) ?? 22,
@@ -53,7 +58,8 @@ class _NotificationPreferencesScreenState extends State<NotificationPreferencesS
     );
 
     if (picked != null) {
-      final formatted = '${picked.hour.toString().padLeft(2, '0')}:${picked.minute.toString().padLeft(2, '0')}';
+      final formatted =
+          '${picked.hour.toString().padLeft(2, '0')}:${picked.minute.toString().padLeft(2, '0')}';
       _updatePref(
         isStart
             ? _currentPrefs!.copyWith(quietHoursStart: formatted)
@@ -70,7 +76,11 @@ class _NotificationPreferencesScreenState extends State<NotificationPreferencesS
       setState(() => _hasChanges = false);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(success ? 'Notification preferences saved' : 'Failed to save preferences'),
+          content: Text(
+            success
+                ? 'Notification preferences saved'
+                : 'Failed to save preferences',
+          ),
           backgroundColor: success ? AppColors.secondaryTeal : AppColors.error,
         ),
       );
@@ -102,7 +112,13 @@ class _NotificationPreferencesScreenState extends State<NotificationPreferencesS
           if (_hasChanges)
             TextButton(
               onPressed: _savePreferences,
-              child: const Text('Save', style: TextStyle(color: AppColors.secondaryTeal, fontWeight: FontWeight.w700)),
+              child: const Text(
+                'Save',
+                style: TextStyle(
+                  color: AppColors.secondaryTeal,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
             ),
         ],
       ),
@@ -130,16 +146,20 @@ class _NotificationPreferencesScreenState extends State<NotificationPreferencesS
                   subtitle: const Text('Receive alerts on this mobile device'),
                   activeThumbColor: AppColors.secondaryTeal,
                   value: p.pushNotifications,
-                  onChanged: (val) => _updatePref(p.copyWith(pushNotifications: val)),
+                  onChanged: (val) =>
+                      _updatePref(p.copyWith(pushNotifications: val)),
                 ),
                 const Divider(height: 1),
                 SwitchListTile(
                   contentPadding: EdgeInsets.zero,
                   title: const Text('Email Notifications'),
-                  subtitle: const Text('Receive daily digest and critical incident emails'),
+                  subtitle: const Text(
+                    'Receive daily digest and critical incident emails',
+                  ),
                   activeThumbColor: AppColors.secondaryTeal,
                   value: p.emailNotifications,
-                  onChanged: (val) => _updatePref(p.copyWith(emailNotifications: val)),
+                  onChanged: (val) =>
+                      _updatePref(p.copyWith(emailNotifications: val)),
                 ),
               ],
             ),
@@ -163,10 +183,13 @@ class _NotificationPreferencesScreenState extends State<NotificationPreferencesS
                 SwitchListTile(
                   contentPadding: EdgeInsets.zero,
                   title: const Text('Enable Quiet Hours'),
-                  subtitle: const Text('Mute non-critical notifications during scheduled rest periods'),
+                  subtitle: const Text(
+                    'Mute non-critical notifications during scheduled rest periods',
+                  ),
                   activeThumbColor: AppColors.secondaryTeal,
                   value: p.quietHoursEnabled,
-                  onChanged: (val) => _updatePref(p.copyWith(quietHoursEnabled: val)),
+                  onChanged: (val) =>
+                      _updatePref(p.copyWith(quietHoursEnabled: val)),
                 ),
                 if (p.quietHoursEnabled) ...[
                   const Divider(height: 1),
@@ -215,7 +238,9 @@ class _NotificationPreferencesScreenState extends State<NotificationPreferencesS
                   decoration: BoxDecoration(
                     color: AppColors.errorSoft,
                     borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: AppColors.error.withValues(alpha: 0.3)),
+                    border: Border.all(
+                      color: AppColors.error.withValues(alpha: 0.3),
+                    ),
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -225,9 +250,19 @@ class _NotificationPreferencesScreenState extends State<NotificationPreferencesS
                         children: [
                           const Row(
                             children: [
-                              Icon(Icons.shield_rounded, size: 20, color: AppColors.error),
+                              Icon(
+                                Icons.shield_rounded,
+                                size: 20,
+                                color: AppColors.error,
+                              ),
                               SizedBox(width: 8),
-                              Text('Critical Safety Incidents', style: TextStyle(fontWeight: FontWeight.w700, color: AppColors.error)),
+                              Text(
+                                'Critical Safety Incidents',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w700,
+                                  color: AppColors.error,
+                                ),
+                              ),
                             ],
                           ),
                           Switch(
@@ -238,17 +273,27 @@ class _NotificationPreferencesScreenState extends State<NotificationPreferencesS
                                 showDialog(
                                   context: context,
                                   builder: (ctx) => AlertDialog(
-                                    title: const Text('Warning: Disable Critical Alerts?'),
+                                    title: const Text(
+                                      'Warning: Disable Critical Alerts?',
+                                    ),
                                     content: const Text(
                                       'Critical alerts include crash detection, roll-over incidents, and high-speed violations. Disabling this may delay emergency fleet responses.',
                                     ),
                                     actions: [
-                                      TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('Keep Enabled')),
+                                      TextButton(
+                                        onPressed: () => Navigator.pop(ctx),
+                                        child: const Text('Keep Enabled'),
+                                      ),
                                       ElevatedButton(
-                                        style: ElevatedButton.styleFrom(backgroundColor: AppColors.error, foregroundColor: Colors.white),
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: AppColors.error,
+                                          foregroundColor: Colors.white,
+                                        ),
                                         onPressed: () {
                                           Navigator.pop(ctx);
-                                          _updatePref(p.copyWith(criticalAlerts: false));
+                                          _updatePref(
+                                            p.copyWith(criticalAlerts: false),
+                                          );
                                         },
                                         child: const Text('Disable Anyway'),
                                       ),
@@ -267,7 +312,9 @@ class _NotificationPreferencesScreenState extends State<NotificationPreferencesS
                         'Immediate push notifications for severe vehicle events regardless of quiet hours.',
                         style: TextStyle(
                           fontSize: 11,
-                          color: isDark ? Colors.white70 : AppColors.secondaryText,
+                          color: isDark
+                              ? Colors.white70
+                              : AppColors.secondaryText,
                         ),
                       ),
                     ],
@@ -278,16 +325,21 @@ class _NotificationPreferencesScreenState extends State<NotificationPreferencesS
                 SwitchListTile(
                   contentPadding: EdgeInsets.zero,
                   title: const Text('Overspeed Violations'),
-                  subtitle: const Text('Triggered when vehicle exceeds speed threshold'),
+                  subtitle: const Text(
+                    'Triggered when vehicle exceeds speed threshold',
+                  ),
                   activeThumbColor: AppColors.secondaryTeal,
                   value: p.overspeedAlerts,
-                  onChanged: (val) => _updatePref(p.copyWith(overspeedAlerts: val)),
+                  onChanged: (val) =>
+                      _updatePref(p.copyWith(overspeedAlerts: val)),
                 ),
                 const Divider(height: 1),
                 SwitchListTile(
                   contentPadding: EdgeInsets.zero,
                   title: const Text('Long Idle Alerts'),
-                  subtitle: const Text('Triggered when vehicle idles with engine on for > 15m'),
+                  subtitle: const Text(
+                    'Triggered when vehicle idles with engine on for > 15m',
+                  ),
                   activeThumbColor: AppColors.secondaryTeal,
                   value: p.idleAlerts,
                   onChanged: (val) => _updatePref(p.copyWith(idleAlerts: val)),
@@ -299,25 +351,54 @@ class _NotificationPreferencesScreenState extends State<NotificationPreferencesS
                   subtitle: const Text('Boundary departure or arrival alerts'),
                   activeThumbColor: AppColors.secondaryTeal,
                   value: p.geofenceAlerts,
-                  onChanged: (val) => _updatePref(p.copyWith(geofenceAlerts: val)),
+                  onChanged: (val) =>
+                      _updatePref(p.copyWith(geofenceAlerts: val)),
+                ),
+                const Divider(height: 1),
+                SwitchListTile(
+                  contentPadding: EdgeInsets.zero,
+                  title: const Text('Route Deviation'),
+                  subtitle: const Text('Vehicle leaves its planned route'),
+                  activeThumbColor: AppColors.secondaryTeal,
+                  value: p.routeDeviationAlerts,
+                  onChanged: (val) =>
+                      _updatePref(p.copyWith(routeDeviationAlerts: val)),
+                ),
+                const Divider(height: 1),
+                SwitchListTile(
+                  contentPadding: EdgeInsets.zero,
+                  title: const Text('Low Fuel'),
+                  subtitle: const Text(
+                    'Fuel level drops below the configured threshold',
+                  ),
+                  activeThumbColor: AppColors.secondaryTeal,
+                  value: p.lowFuelAlerts,
+                  onChanged: (val) =>
+                      _updatePref(p.copyWith(lowFuelAlerts: val)),
                 ),
                 const Divider(height: 1),
                 SwitchListTile(
                   contentPadding: EdgeInsets.zero,
                   title: const Text('Device Offline Alerts'),
-                  subtitle: const Text('Notifies when GPS unit ceases pinging server'),
+                  subtitle: const Text(
+                    'Notifies when GPS unit ceases pinging server',
+                  ),
                   activeThumbColor: AppColors.secondaryTeal,
                   value: p.offlineAlerts,
-                  onChanged: (val) => _updatePref(p.copyWith(offlineAlerts: val)),
+                  onChanged: (val) =>
+                      _updatePref(p.copyWith(offlineAlerts: val)),
                 ),
                 const Divider(height: 1),
                 SwitchListTile(
                   contentPadding: EdgeInsets.zero,
                   title: const Text('Maintenance Reminders'),
-                  subtitle: const Text('Scheduled servicing and diagnostic checks'),
+                  subtitle: const Text(
+                    'Scheduled servicing and diagnostic checks',
+                  ),
                   activeThumbColor: AppColors.secondaryTeal,
                   value: p.maintenanceReminders,
-                  onChanged: (val) => _updatePref(p.copyWith(maintenanceReminders: val)),
+                  onChanged: (val) =>
+                      _updatePref(p.copyWith(maintenanceReminders: val)),
                 ),
               ],
             ),
@@ -330,10 +411,15 @@ class _NotificationPreferencesScreenState extends State<NotificationPreferencesS
                 backgroundColor: AppColors.secondaryTeal,
                 foregroundColor: Colors.white,
                 padding: const EdgeInsets.symmetric(vertical: 14),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
               ),
               onPressed: _savePreferences,
-              child: const Text('Save Notification Preferences', style: TextStyle(fontWeight: FontWeight.w700)),
+              child: const Text(
+                'Save Notification Preferences',
+                style: TextStyle(fontWeight: FontWeight.w700),
+              ),
             ),
           const SizedBox(height: 24),
         ],

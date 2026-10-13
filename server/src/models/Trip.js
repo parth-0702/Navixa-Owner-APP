@@ -78,6 +78,12 @@ const tripSchema = new mongoose.Schema(
         lng: { type: Number, required: true },
       },
     ],
+    plannedPolyline: [
+      {
+        lat: { type: Number, required: true },
+        lng: { type: Number, required: true },
+      },
+    ],
     stops: [stopSchema],
     idleEvents: [idleEventSchema],
     maxSpeedKmh: { type: Number, default: 0 },

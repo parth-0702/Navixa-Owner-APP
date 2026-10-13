@@ -15,6 +15,7 @@ import 'providers/auth_provider.dart';
 import 'providers/fleet_provider.dart';
 import 'providers/map_provider.dart';
 import 'providers/overview_provider.dart';
+import 'providers/operations_provider.dart';
 import 'providers/settings_provider.dart';
 import 'ui/navigation/app_router.dart';
 
@@ -36,7 +37,10 @@ void main() async {
 
   final socketService = SocketService(preferencesService: preferencesService);
 
-  final authRepo = AuthRepository(apiClient: apiClient, secureStorage: secureStorage);
+  final authRepo = AuthRepository(
+    apiClient: apiClient,
+    secureStorage: secureStorage,
+  );
   final fleetRepo = FleetRepository(apiClient: apiClient);
   final alertsRepo = AlertsRepository(apiClient: apiClient);
   final settingsRepo = SettingsRepository(apiClient: apiClient);
@@ -74,6 +78,9 @@ void main() async {
             fleetRepository: fleetRepo,
             socketService: socketService,
           ),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => OperationsProvider(fleetRepository: fleetRepo),
         ),
         ChangeNotifierProvider(
           create: (_) => SettingsProvider(

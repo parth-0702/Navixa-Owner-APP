@@ -22,6 +22,7 @@ class _LiveFleetMapScreenState extends State<LiveFleetMapScreen> {
     {'id': 'all', 'label': 'All'},
     {'id': 'moving', 'label': 'Moving'},
     {'id': 'idle', 'label': 'Idle'},
+    {'id': 'stopped', 'label': 'Stopped'},
     {'id': 'parked', 'label': 'Parked'},
     {'id': 'offline', 'label': 'Offline'},
   ];
@@ -49,10 +50,7 @@ class _LiveFleetMapScreenState extends State<LiveFleetMapScreen> {
 
     final bounds = LatLngBounds.fromPoints(validLocations);
     _mapController.fitCamera(
-      CameraFit.bounds(
-        bounds: bounds,
-        padding: const EdgeInsets.all(50),
-      ),
+      CameraFit.bounds(bounds: bounds, padding: const EdgeInsets.all(50)),
     );
   }
 
@@ -80,6 +78,8 @@ class _LiveFleetMapScreenState extends State<LiveFleetMapScreen> {
         return AppColors.secondaryTeal;
       case VehicleStatus.idle:
         return AppColors.accentGold;
+      case VehicleStatus.stopped:
+        return AppColors.statusStopped;
       case VehicleStatus.parked:
         return AppColors.primaryNavy;
       case VehicleStatus.offline:
@@ -112,52 +112,57 @@ class _LiveFleetMapScreenState extends State<LiveFleetMapScreen> {
           final vehicles = mapProv.filteredVehicles;
 
           // Default center: Bangalore coordinates if no vehicles, otherwise first vehicle
-          final initialCenter = vehicles.isNotEmpty && vehicles.first.lastLocation != null
-              ? LatLng(vehicles.first.lastLocation!.latitude, vehicles.first.lastLocation!.longitude)
+          final initialCenter =
+              vehicles.isNotEmpty && vehicles.first.lastLocation != null
+              ? LatLng(
+                  vehicles.first.lastLocation!.latitude,
+                  vehicles.first.lastLocation!.longitude,
+                )
               : const LatLng(12.9716, 77.5946);
 
-          final markers = vehicles
-              .where((v) => v.lastLocation != null)
-              .map((v) {
-                final loc = v.lastLocation!;
-                final color = _getStatusMarkerColor(v.status, v.isStale);
-                final isSelected = mapProv.selectedVehicle?.id == v.id;
+          final markers = vehicles.where((v) => v.lastLocation != null).map((
+            v,
+          ) {
+            final loc = v.lastLocation!;
+            final color = _getStatusMarkerColor(v.status, v.isStale);
+            final isSelected = mapProv.selectedVehicle?.id == v.id;
 
-                return Marker(
-                  point: LatLng(loc.latitude, loc.longitude),
-                  width: isSelected ? 56 : 46,
-                  height: isSelected ? 56 : 46,
-                  child: GestureDetector(
-                    onTap: () => _onMarkerTapped(v),
-                    child: AnimatedContainer(
-                      duration: const Duration(milliseconds: 250),
-                      decoration: BoxDecoration(
-                        color: color,
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                          color: isSelected ? Colors.white : Colors.white.withValues(alpha: 0.9),
-                          width: isSelected ? 3.5 : 2.5,
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: color.withValues(alpha: 0.4),
-                            blurRadius: isSelected ? 10 : 6,
-                            offset: const Offset(0, 3),
-                          ),
-                        ],
-                      ),
-                      child: Icon(
-                        v.status == VehicleStatus.moving
-                            ? Icons.navigation_rounded
-                            : Icons.local_shipping_rounded,
-                        color: Colors.white,
-                        size: isSelected ? 26 : 20,
-                      ),
+            return Marker(
+              point: LatLng(loc.latitude, loc.longitude),
+              width: isSelected ? 56 : 46,
+              height: isSelected ? 56 : 46,
+              child: GestureDetector(
+                onTap: () => _onMarkerTapped(v),
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 250),
+                  decoration: BoxDecoration(
+                    color: color,
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: isSelected
+                          ? Colors.white
+                          : Colors.white.withValues(alpha: 0.9),
+                      width: isSelected ? 3.5 : 2.5,
                     ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: color.withValues(alpha: 0.4),
+                        blurRadius: isSelected ? 10 : 6,
+                        offset: const Offset(0, 3),
+                      ),
+                    ],
                   ),
-                );
-              })
-              .toList();
+                  child: Icon(
+                    v.status == VehicleStatus.moving
+                        ? Icons.navigation_rounded
+                        : Icons.local_shipping_rounded,
+                    color: Colors.white,
+                    size: isSelected ? 26 : 20,
+                  ),
+                ),
+              ),
+            );
+          }).toList();
 
           return Stack(
             children: [
@@ -206,16 +211,23 @@ class _LiveFleetMapScreenState extends State<LiveFleetMapScreen> {
                           return ChoiceChip(
                             label: Text(f['label']!),
                             selected: isSelected,
-                            onSelected: (_) => mapProv.setStatusFilter(f['id']!),
+                            onSelected: (_) =>
+                                mapProv.setStatusFilter(f['id']!),
                             selectedColor: AppColors.primaryNavy,
                             labelStyle: TextStyle(
-                              color: isSelected ? Colors.white : AppColors.primaryText,
-                              fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
+                              color: isSelected
+                                  ? Colors.white
+                                  : AppColors.primaryText,
+                              fontWeight: isSelected
+                                  ? FontWeight.w700
+                                  : FontWeight.w500,
                               fontSize: 12,
                             ),
                             backgroundColor: theme.colorScheme.surface,
                             side: BorderSide(
-                              color: isSelected ? AppColors.primaryNavy : AppColors.lightBorder,
+                              color: isSelected
+                                  ? AppColors.primaryNavy
+                                  : AppColors.lightBorder,
                             ),
                           );
                         },
@@ -234,7 +246,10 @@ class _LiveFleetMapScreenState extends State<LiveFleetMapScreen> {
                   children: [
                     // Total visible badge
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 6,
+                      ),
                       margin: const EdgeInsets.only(bottom: 12),
                       decoration: BoxDecoration(
                         color: AppColors.primaryNavy,
@@ -275,10 +290,17 @@ class _LiveFleetMapScreenState extends State<LiveFleetMapScreen> {
                       onPressed: () {
                         if (mapProv.selectedVehicle?.lastLocation != null) {
                           final loc = mapProv.selectedVehicle!.lastLocation!;
-                          _mapController.move(LatLng(loc.latitude, loc.longitude), 14);
-                        } else if (vehicles.isNotEmpty && vehicles.first.lastLocation != null) {
+                          _mapController.move(
+                            LatLng(loc.latitude, loc.longitude),
+                            14,
+                          );
+                        } else if (vehicles.isNotEmpty &&
+                            vehicles.first.lastLocation != null) {
                           final loc = vehicles.first.lastLocation!;
-                          _mapController.move(LatLng(loc.latitude, loc.longitude), 14);
+                          _mapController.move(
+                            LatLng(loc.latitude, loc.longitude),
+                            14,
+                          );
                         }
                       },
                       tooltip: 'Recenter',
@@ -297,13 +319,23 @@ class _LiveFleetMapScreenState extends State<LiveFleetMapScreen> {
                   child: Center(
                     child: Card(
                       child: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 8,
+                        ),
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            SizedBox(width: 14, height: 14, child: CircularProgressIndicator(strokeWidth: 2)),
+                            SizedBox(
+                              width: 14,
+                              height: 14,
+                              child: CircularProgressIndicator(strokeWidth: 2),
+                            ),
                             SizedBox(width: 10),
-                            Text('Updating positions...', style: TextStyle(fontSize: 12)),
+                            Text(
+                              'Updating positions...',
+                              style: TextStyle(fontSize: 12),
+                            ),
                           ],
                         ),
                       ),

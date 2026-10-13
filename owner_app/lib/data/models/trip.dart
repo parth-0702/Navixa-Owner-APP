@@ -78,8 +78,12 @@ class StopEvent {
   factory StopEvent.fromJson(Map<String, dynamic> json) {
     DateTime? arr;
     DateTime? dep;
-    if (json['arrivalTime'] != null) arr = DateTime.tryParse(json['arrivalTime'].toString());
-    if (json['departureTime'] != null) dep = DateTime.tryParse(json['departureTime'].toString());
+    if (json['arrivalTime'] != null) {
+      arr = DateTime.tryParse(json['arrivalTime'].toString());
+    }
+    if (json['departureTime'] != null) {
+      dep = DateTime.tryParse(json['departureTime'].toString());
+    }
 
     LatLngPoint? pt;
     if (json['coordinates'] != null) {
@@ -112,8 +116,12 @@ class IdleEvent {
   factory IdleEvent.fromJson(Map<String, dynamic> json) {
     DateTime? start;
     DateTime? end;
-    if (json['startTime'] != null) start = DateTime.tryParse(json['startTime'].toString());
-    if (json['endTime'] != null) end = DateTime.tryParse(json['endTime'].toString());
+    if (json['startTime'] != null) {
+      start = DateTime.tryParse(json['startTime'].toString());
+    }
+    if (json['endTime'] != null) {
+      end = DateTime.tryParse(json['endTime'].toString());
+    }
 
     LatLngPoint? pt;
     if (json['coordinates'] != null) {
@@ -146,6 +154,7 @@ class Trip {
     this.averageSpeedKmh = 0.0,
     this.safetyScore = 100,
     this.polyline = const [],
+    this.plannedPolyline = const [],
     this.stops = const [],
     this.idleEvents = const [],
     this.vehicleNickname = '',
@@ -169,6 +178,7 @@ class Trip {
   final double averageSpeedKmh;
   final int safetyScore;
   final List<LatLngPoint> polyline;
+  final List<LatLngPoint> plannedPolyline;
   final List<StopEvent> stops;
   final List<IdleEvent> idleEvents;
   final String vehicleNickname;
@@ -181,22 +191,39 @@ class Trip {
   factory Trip.fromJson(Map<String, dynamic> json) {
     DateTime? start;
     DateTime? end;
-    if (json['startTime'] != null) start = DateTime.tryParse(json['startTime'].toString());
-    if (json['endTime'] != null) end = DateTime.tryParse(json['endTime'].toString());
+    if (json['startTime'] != null) {
+      start = DateTime.tryParse(json['startTime'].toString());
+    }
+    if (json['endTime'] != null) {
+      end = DateTime.tryParse(json['endTime'].toString());
+    }
 
     List<LatLngPoint> poly = [];
     if (json['polyline'] is List) {
-      poly = (json['polyline'] as List).map((p) => LatLngPoint.fromJson(p)).toList();
+      poly = (json['polyline'] as List)
+          .map((p) => LatLngPoint.fromJson(p))
+          .toList();
+    }
+
+    List<LatLngPoint> plannedPoly = [];
+    if (json['plannedPolyline'] is List) {
+      plannedPoly = (json['plannedPolyline'] as List)
+          .map((p) => LatLngPoint.fromJson(p))
+          .toList();
     }
 
     List<StopEvent> stopList = [];
     if (json['stops'] is List) {
-      stopList = (json['stops'] as List).map((s) => StopEvent.fromJson(s as Map<String, dynamic>)).toList();
+      stopList = (json['stops'] as List)
+          .map((s) => StopEvent.fromJson(s as Map<String, dynamic>))
+          .toList();
     }
 
     List<IdleEvent> idleList = [];
     if (json['idleEvents'] is List) {
-      idleList = (json['idleEvents'] as List).map((i) => IdleEvent.fromJson(i as Map<String, dynamic>)).toList();
+      idleList = (json['idleEvents'] as List)
+          .map((i) => IdleEvent.fromJson(i as Map<String, dynamic>))
+          .toList();
     }
 
     String vNick = '';
@@ -228,12 +255,17 @@ class Trip {
       durationMinutes: (json['durationMinutes'] as num?)?.toInt() ?? 0,
       startAddress: json['startAddress']?.toString() ?? '',
       endAddress: json['endAddress']?.toString() ?? '',
-      startLocation: json['startLocation'] != null ? LatLngPoint.fromJson(json['startLocation']) : null,
-      endLocation: json['endLocation'] != null ? LatLngPoint.fromJson(json['endLocation']) : null,
+      startLocation: json['startLocation'] != null
+          ? LatLngPoint.fromJson(json['startLocation'])
+          : null,
+      endLocation: json['endLocation'] != null
+          ? LatLngPoint.fromJson(json['endLocation'])
+          : null,
       maxSpeedKmh: (json['maxSpeedKmh'] as num?)?.toDouble() ?? 0.0,
       averageSpeedKmh: (json['averageSpeedKmh'] as num?)?.toDouble() ?? 0.0,
       safetyScore: (json['safetyScore'] as num?)?.toInt() ?? 100,
       polyline: poly,
+      plannedPolyline: plannedPoly,
       stops: stopList,
       idleEvents: idleList,
       vehicleNickname: vNick,

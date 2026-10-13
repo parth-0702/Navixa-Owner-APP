@@ -60,8 +60,14 @@ class ProfileScreen extends StatelessWidget {
                 if (context.mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                      content: Text(success ? 'Profile updated successfully' : 'Failed to update profile'),
-                      backgroundColor: success ? AppColors.secondaryTeal : AppColors.error,
+                      content: Text(
+                        success
+                            ? 'Profile updated successfully'
+                            : 'Failed to update profile',
+                      ),
+                      backgroundColor: success
+                          ? AppColors.secondaryTeal
+                          : AppColors.error,
                     ),
                   );
                 }
@@ -90,7 +96,9 @@ class ProfileScreen extends StatelessWidget {
             children: [
               TextField(
                 controller: currentController,
-                decoration: const InputDecoration(labelText: 'Current Password'),
+                decoration: const InputDecoration(
+                  labelText: 'Current Password',
+                ),
                 obscureText: true,
               ),
               const SizedBox(height: 12),
@@ -102,7 +110,9 @@ class ProfileScreen extends StatelessWidget {
               const SizedBox(height: 12),
               TextField(
                 controller: confirmController,
-                decoration: const InputDecoration(labelText: 'Confirm New Password'),
+                decoration: const InputDecoration(
+                  labelText: 'Confirm New Password',
+                ),
                 obscureText: true,
               ),
             ],
@@ -116,7 +126,10 @@ class ProfileScreen extends StatelessWidget {
               onPressed: () async {
                 if (newController.text != confirmController.text) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('New passwords do not match'), backgroundColor: AppColors.error),
+                    const SnackBar(
+                      content: Text('New passwords do not match'),
+                      backgroundColor: AppColors.error,
+                    ),
                   );
                   return;
                 }
@@ -128,8 +141,14 @@ class ProfileScreen extends StatelessWidget {
                 if (context.mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                      content: Text(success ? 'Password updated successfully' : 'Failed to change password'),
-                      backgroundColor: success ? AppColors.secondaryTeal : AppColors.error,
+                      content: Text(
+                        success
+                            ? 'Password updated successfully'
+                            : 'Failed to change password',
+                      ),
+                      backgroundColor: success
+                          ? AppColors.secondaryTeal
+                          : AppColors.error,
                     ),
                   );
                 }
@@ -147,14 +166,19 @@ class ProfileScreen extends StatelessWidget {
       context: context,
       builder: (ctx) => AlertDialog(
         title: const Text('Log Out'),
-        content: const Text('Are you sure you want to log out of the Navixa Owner app?'),
+        content: const Text(
+          'Are you sure you want to log out of the Navixa Owner app?',
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx),
             child: const Text('Cancel'),
           ),
           ElevatedButton(
-            style: ElevatedButton.styleFrom(backgroundColor: AppColors.error, foregroundColor: Colors.white),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.error,
+              foregroundColor: Colors.white,
+            ),
             onPressed: () {
               Navigator.pop(ctx);
               context.read<AuthProvider>().logout();
@@ -175,9 +199,7 @@ class ProfileScreen extends StatelessWidget {
     final user = auth.currentUser;
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Account & Organization'),
-      ),
+      appBar: AppBar(title: const Text('Account & Organization')),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
@@ -189,18 +211,29 @@ class ProfileScreen extends StatelessWidget {
                   radius: 36,
                   backgroundColor: AppColors.primaryNavy,
                   child: Text(
-                    (user?.name.isNotEmpty ?? false) ? user!.name[0].toUpperCase() : 'O',
-                    style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.white),
+                    (user?.name.isNotEmpty ?? false)
+                        ? user!.name[0].toUpperCase()
+                        : 'O',
+                    style: const TextStyle(
+                      fontSize: 28,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
                 const SizedBox(height: 12),
                 Text(
                   user?.name ?? 'Fleet Owner',
-                  style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
+                  style: theme.textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
                 const SizedBox(height: 4),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 3,
+                  ),
                   decoration: BoxDecoration(
                     color: AppColors.secondaryTeal.withValues(alpha: 0.15),
                     borderRadius: BorderRadius.circular(12),
@@ -218,7 +251,9 @@ class ProfileScreen extends StatelessWidget {
                 const SizedBox(height: 12),
                 Text(
                   user?.email ?? '',
-                  style: theme.textTheme.bodySmall?.copyWith(color: AppColors.secondaryText),
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: AppColors.secondaryText,
+                  ),
                 ),
                 if (user?.organizationName != null) ...[
                   const SizedBox(height: 2),
@@ -261,27 +296,90 @@ class ProfileScreen extends StatelessWidget {
                 const SizedBox(height: 8),
                 ListTile(
                   contentPadding: EdgeInsets.zero,
-                  leading: const Icon(Icons.lock_outline_rounded, color: AppColors.primaryNavy),
+                  leading: const Icon(
+                    Icons.lock_outline_rounded,
+                    color: AppColors.primaryNavy,
+                  ),
                   title: const Text('Change Password'),
-                  trailing: const Icon(Icons.chevron_right_rounded, color: AppColors.secondaryText),
+                  trailing: const Icon(
+                    Icons.chevron_right_rounded,
+                    color: AppColors.secondaryText,
+                  ),
                   onTap: () => _showChangePasswordDialog(context),
                 ),
                 const Divider(height: 1),
                 ListTile(
                   contentPadding: EdgeInsets.zero,
-                  leading: const Icon(Icons.notifications_active_outlined, color: AppColors.primaryNavy),
+                  leading: const Icon(
+                    Icons.notifications_active_outlined,
+                    color: AppColors.primaryNavy,
+                  ),
                   title: const Text('Notification Preferences'),
-                  trailing: const Icon(Icons.chevron_right_rounded, color: AppColors.secondaryText),
+                  trailing: const Icon(
+                    Icons.chevron_right_rounded,
+                    color: AppColors.secondaryText,
+                  ),
                   onTap: () => context.push('/settings/preferences'),
+                ),
+                const Divider(height: 1),
+                ListTile(
+                  contentPadding: EdgeInsets.zero,
+                  leading: const Icon(
+                    Icons.route_outlined,
+                    color: AppColors.primaryNavy,
+                  ),
+                  title: const Text('Trips & Route History'),
+                  trailing: const Icon(
+                    Icons.chevron_right_rounded,
+                    color: AppColors.secondaryText,
+                  ),
+                  onTap: () => context.push('/trips'),
+                ),
+                const Divider(height: 1),
+                ListTile(
+                  contentPadding: EdgeInsets.zero,
+                  leading: const Icon(
+                    Icons.badge_outlined,
+                    color: AppColors.primaryNavy,
+                  ),
+                  title: const Text('Driver Overview'),
+                  trailing: const Icon(
+                    Icons.chevron_right_rounded,
+                    color: AppColors.secondaryText,
+                  ),
+                  onTap: () => context.push('/drivers'),
+                ),
+                const Divider(height: 1),
+                ListTile(
+                  contentPadding: EdgeInsets.zero,
+                  leading: const Icon(
+                    Icons.assessment_outlined,
+                    color: AppColors.primaryNavy,
+                  ),
+                  title: const Text('Fleet Reports'),
+                  trailing: const Icon(
+                    Icons.chevron_right_rounded,
+                    color: AppColors.secondaryText,
+                  ),
+                  onTap: () => context.push('/reports'),
                 ),
                 if (auth.isOwner || auth.isManager) ...[
                   const Divider(height: 1),
                   ListTile(
                     contentPadding: EdgeInsets.zero,
-                    leading: const Icon(Icons.group_outlined, color: AppColors.primaryNavy),
+                    leading: const Icon(
+                      Icons.group_outlined,
+                      color: AppColors.primaryNavy,
+                    ),
                     title: const Text('Team Management'),
-                    subtitle: const Text('Manage owners, managers and viewers', style: TextStyle(fontSize: 12)),
-                    trailing: const Icon(Icons.chevron_right_rounded, color: AppColors.secondaryText),
+                    subtitle: const Text(
+                      'Manage owners, managers and viewers',
+                      style: TextStyle(fontSize: 12),
+                    ),
+                    trailing: const Icon(
+                      Icons.chevron_right_rounded,
+                      color: AppColors.secondaryText,
+                    ),
                     onTap: () => context.push('/settings/team'),
                   ),
                 ],
@@ -306,9 +404,21 @@ class ProfileScreen extends StatelessWidget {
                 const SizedBox(height: 12),
                 SegmentedButton<ThemeMode>(
                   segments: const [
-                    ButtonSegment(value: ThemeMode.system, label: Text('System'), icon: Icon(Icons.brightness_auto)),
-                    ButtonSegment(value: ThemeMode.light, label: Text('Light'), icon: Icon(Icons.light_mode)),
-                    ButtonSegment(value: ThemeMode.dark, label: Text('Dark'), icon: Icon(Icons.dark_mode)),
+                    ButtonSegment(
+                      value: ThemeMode.system,
+                      label: Text('System'),
+                      icon: Icon(Icons.brightness_auto),
+                    ),
+                    ButtonSegment(
+                      value: ThemeMode.light,
+                      label: Text('Light'),
+                      icon: Icon(Icons.light_mode),
+                    ),
+                    ButtonSegment(
+                      value: ThemeMode.dark,
+                      label: Text('Dark'),
+                      icon: Icon(Icons.dark_mode),
+                    ),
                   ],
                   selected: {settings.themeMode},
                   onSelectionChanged: (set) => settings.setThemeMode(set.first),
@@ -335,16 +445,28 @@ class ProfileScreen extends StatelessWidget {
                 const ListTile(
                   contentPadding: EdgeInsets.zero,
                   title: Text('App Version'),
-                  trailing: Text('1.0.0 (Build 1)', style: TextStyle(fontWeight: FontWeight.w600, color: AppColors.secondaryText)),
+                  trailing: Text(
+                    '1.0.0 (Build 1)',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.secondaryText,
+                    ),
+                  ),
                 ),
                 const Divider(height: 1),
                 ListTile(
                   contentPadding: EdgeInsets.zero,
                   title: const Text('Privacy Policy'),
-                  trailing: const Icon(Icons.open_in_new_rounded, size: 16, color: AppColors.secondaryText),
+                  trailing: const Icon(
+                    Icons.open_in_new_rounded,
+                    size: 16,
+                    color: AppColors.secondaryText,
+                  ),
                   onTap: () {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Opening Navixa privacy policy...')),
+                      const SnackBar(
+                        content: Text('Opening Navixa privacy policy...'),
+                      ),
                     );
                   },
                 ),
@@ -352,10 +474,16 @@ class ProfileScreen extends StatelessWidget {
                 ListTile(
                   contentPadding: EdgeInsets.zero,
                   title: const Text('Support & Help Center'),
-                  trailing: const Icon(Icons.open_in_new_rounded, size: 16, color: AppColors.secondaryText),
+                  trailing: const Icon(
+                    Icons.open_in_new_rounded,
+                    size: 16,
+                    color: AppColors.secondaryText,
+                  ),
                   onTap: () {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Support contact: support@navixa.com')),
+                      const SnackBar(
+                        content: Text('Support contact: support@navixa.com'),
+                      ),
                     );
                   },
                 ),
@@ -371,10 +499,15 @@ class ProfileScreen extends StatelessWidget {
               foregroundColor: AppColors.error,
               elevation: 0,
               padding: const EdgeInsets.symmetric(vertical: 14),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
             ),
             icon: const Icon(Icons.logout_rounded),
-            label: const Text('Log Out', style: TextStyle(fontWeight: FontWeight.w700)),
+            label: const Text(
+              'Log Out',
+              style: TextStyle(fontWeight: FontWeight.w700),
+            ),
             onPressed: () => _confirmLogout(context),
           ),
           const SizedBox(height: 32),

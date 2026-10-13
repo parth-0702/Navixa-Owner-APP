@@ -63,7 +63,9 @@ class _OverviewScreenState extends State<OverviewScreen> {
     final counts = data?.statusCounts;
 
     return Scaffold(
-      backgroundColor: isDark ? AppColors.darkPageBackground : AppColors.pageBackground,
+      backgroundColor: isDark
+          ? AppColors.darkPageBackground
+          : AppColors.pageBackground,
       appBar: AppBar(
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -78,7 +80,9 @@ class _OverviewScreenState extends State<OverviewScreen> {
             Text(
               data?.organizationName ?? 'Navixa Fleet',
               style: theme.textTheme.labelSmall?.copyWith(
-                color: isDark ? AppColors.darkSecondaryText : AppColors.secondaryText,
+                color: isDark
+                    ? AppColors.darkSecondaryText
+                    : AppColors.secondaryText,
                 fontWeight: FontWeight.w600,
               ),
             ),
@@ -101,7 +105,9 @@ class _OverviewScreenState extends State<OverviewScreen> {
               radius: 16,
               backgroundColor: AppColors.secondaryTeal.withValues(alpha: 0.15),
               child: Text(
-                auth.user?.name.isNotEmpty == true ? auth.user!.name[0].toUpperCase() : 'O',
+                auth.user?.name.isNotEmpty == true
+                    ? auth.user!.name[0].toUpperCase()
+                    : 'O',
                 style: const TextStyle(
                   color: AppColors.secondaryTeal,
                   fontWeight: FontWeight.w800,
@@ -127,20 +133,33 @@ class _OverviewScreenState extends State<OverviewScreen> {
               if (overview.isOffline) ...[
                 Container(
                   margin: const EdgeInsets.only(bottom: 12),
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 8,
+                  ),
                   decoration: BoxDecoration(
                     color: AppColors.warningSoft,
                     borderRadius: BorderRadius.circular(8),
-                    border: Border.all(color: AppColors.warning.withValues(alpha: 0.5)),
+                    border: Border.all(
+                      color: AppColors.warning.withValues(alpha: 0.5),
+                    ),
                   ),
                   child: Row(
                     children: const [
-                      Icon(Icons.wifi_off_rounded, size: 16, color: AppColors.warningDark),
+                      Icon(
+                        Icons.wifi_off_rounded,
+                        size: 16,
+                        color: AppColors.warningDark,
+                      ),
                       SizedBox(width: 8),
                       Expanded(
                         child: Text(
                           'Showing cached fleet status. Reconnecting to live feed...',
-                          style: TextStyle(color: AppColors.warningDark, fontSize: 12, fontWeight: FontWeight.w600),
+                          style: TextStyle(
+                            color: AppColors.warningDark,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                       ),
                     ],
@@ -198,6 +217,21 @@ class _OverviewScreenState extends State<OverviewScreen> {
                   const SizedBox(width: 10),
                   Expanded(
                     child: StatusSummaryCard(
+                      title: 'Stopped',
+                      count: counts?.stopped ?? 0,
+                      icon: Icons.stop_circle_rounded,
+                      color: AppColors.statusStopped,
+                      containerColor: AppColors.warningSoft,
+                      onTap: () => _navigateToFleetWithFilter('stopped'),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 10),
+              Row(
+                children: [
+                  Expanded(
+                    child: StatusSummaryCard(
                       title: 'Parked',
                       count: counts?.parked ?? 0,
                       icon: Icons.local_parking_rounded,
@@ -214,6 +248,35 @@ class _OverviewScreenState extends State<OverviewScreen> {
                       color: AppColors.statusOffline,
                       containerColor: AppColors.offlineSoft,
                       onTap: () => _navigateToFleetWithFilter('offline'),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 16),
+
+              Row(
+                children: [
+                  Expanded(
+                    child: _OwnerShortcut(
+                      icon: Icons.route_outlined,
+                      label: 'Trips',
+                      onTap: () => context.push('/trips'),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: _OwnerShortcut(
+                      icon: Icons.badge_outlined,
+                      label: 'Drivers',
+                      onTap: () => context.push('/drivers'),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: _OwnerShortcut(
+                      icon: Icons.assessment_outlined,
+                      label: 'Reports',
+                      onTap: () => context.push('/reports'),
                     ),
                   ),
                 ],
@@ -247,13 +310,23 @@ class _OverviewScreenState extends State<OverviewScreen> {
 
               if (data?.recentAlerts.isEmpty ?? true)
                 AppCard(
-                  padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 24,
+                    horizontal: 16,
+                  ),
                   child: Center(
                     child: Column(
                       children: [
-                        const Icon(Icons.check_circle_outline_rounded, color: AppColors.secondaryTeal, size: 28),
+                        const Icon(
+                          Icons.check_circle_outline_rounded,
+                          color: AppColors.secondaryTeal,
+                          size: 28,
+                        ),
                         const SizedBox(height: 6),
-                        Text('All vehicles operating normally', style: theme.textTheme.bodyMedium),
+                        Text(
+                          'All vehicles operating normally',
+                          style: theme.textTheme.bodyMedium,
+                        ),
                       ],
                     ),
                   ),
@@ -274,7 +347,11 @@ class _OverviewScreenState extends State<OverviewScreen> {
                               color: alert.severity.containerColor,
                               shape: BoxShape.circle,
                             ),
-                            child: Icon(alert.severity.icon, size: 18, color: alert.severity.color),
+                            child: Icon(
+                              alert.severity.icon,
+                              size: 18,
+                              color: alert.severity.color,
+                            ),
                           ),
                           const SizedBox(width: 12),
                           Expanded(
@@ -283,7 +360,9 @@ class _OverviewScreenState extends State<OverviewScreen> {
                               children: [
                                 Text(
                                   alert.title,
-                                  style: theme.textTheme.labelLarge?.copyWith(fontSize: 13),
+                                  style: theme.textTheme.labelLarge?.copyWith(
+                                    fontSize: 13,
+                                  ),
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                 ),
@@ -299,7 +378,9 @@ class _OverviewScreenState extends State<OverviewScreen> {
                           Icon(
                             Icons.chevron_right_rounded,
                             size: 18,
-                            color: isDark ? AppColors.darkSecondaryText : AppColors.secondaryText,
+                            color: isDark
+                                ? AppColors.darkSecondaryText
+                                : AppColors.secondaryText,
                           ),
                         ],
                       ),
@@ -329,13 +410,23 @@ class _OverviewScreenState extends State<OverviewScreen> {
 
               if (data?.recentTrips.isEmpty ?? true)
                 AppCard(
-                  padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 24,
+                    horizontal: 16,
+                  ),
                   child: Center(
                     child: Column(
                       children: [
-                        const Icon(Icons.route_outlined, color: AppColors.secondaryText, size: 28),
+                        const Icon(
+                          Icons.route_outlined,
+                          color: AppColors.secondaryText,
+                          size: 28,
+                        ),
                         const SizedBox(height: 6),
-                        Text('No recent trip logs recorded today', style: theme.textTheme.bodyMedium),
+                        Text(
+                          'No recent trip logs recorded today',
+                          style: theme.textTheme.bodyMedium,
+                        ),
                       ],
                     ),
                   ),
@@ -353,9 +444,14 @@ class _OverviewScreenState extends State<OverviewScreen> {
                           Row(
                             children: [
                               Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 6,
+                                  vertical: 2,
+                                ),
                                 decoration: BoxDecoration(
-                                  color: AppColors.secondaryTeal.withValues(alpha: 0.12),
+                                  color: AppColors.secondaryTeal.withValues(
+                                    alpha: 0.12,
+                                  ),
                                   borderRadius: BorderRadius.circular(4),
                                 ),
                                 child: Text(
@@ -370,19 +466,27 @@ class _OverviewScreenState extends State<OverviewScreen> {
                               const Spacer(),
                               Text(
                                 '${Formatters.formatDistance(trip.distanceKm)} • ${trip.durationMinutes} min',
-                                style: theme.textTheme.labelSmall?.copyWith(fontWeight: FontWeight.w600),
+                                style: theme.textTheme.labelSmall?.copyWith(
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
                             ],
                           ),
                           const SizedBox(height: 8),
                           Row(
                             children: [
-                              const Icon(Icons.navigation_rounded, size: 14, color: AppColors.secondaryTeal),
+                              const Icon(
+                                Icons.navigation_rounded,
+                                size: 14,
+                                color: AppColors.secondaryTeal,
+                              ),
                               const SizedBox(width: 6),
                               Expanded(
                                 child: Text(
                                   '${trip.vehicleNickname} • Driver: ${trip.driver?.name ?? "Assigned"}',
-                                  style: theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600),
+                                  style: theme.textTheme.bodyMedium?.copyWith(
+                                    fontWeight: FontWeight.w600,
+                                  ),
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                 ),
@@ -405,6 +509,49 @@ class _OverviewScreenState extends State<OverviewScreen> {
                 }),
 
               const SizedBox(height: 24),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _OwnerShortcut extends StatelessWidget {
+  const _OwnerShortcut({
+    required this.icon,
+    required this.label,
+    required this.onTap,
+  });
+
+  final IconData icon;
+  final String label;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: Theme.of(context).colorScheme.surface,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+        side: BorderSide(color: Theme.of(context).dividerColor),
+      ),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(12),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+          child: Column(
+            children: [
+              Icon(icon, color: AppColors.secondaryTeal, size: 22),
+              const SizedBox(height: 5),
+              Text(
+                label,
+                style: const TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
             ],
           ),
         ),

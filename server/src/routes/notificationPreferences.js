@@ -26,6 +26,8 @@ router.get('/', async (req, res) => {
         overspeedAlerts: true,
         idleAlerts: true,
         geofenceAlerts: true,
+        routeDeviationAlerts: true,
+        lowFuelAlerts: true,
         offlineAlerts: true,
         maintenanceReminders: true,
       });
@@ -51,6 +53,8 @@ router.put('/', async (req, res) => {
       overspeedAlerts,
       idleAlerts,
       geofenceAlerts,
+      routeDeviationAlerts,
+      lowFuelAlerts,
       offlineAlerts,
       maintenanceReminders,
     } = req.body;
@@ -75,6 +79,8 @@ router.put('/', async (req, res) => {
     if (overspeedAlerts !== undefined) prefs.overspeedAlerts = Boolean(overspeedAlerts);
     if (idleAlerts !== undefined) prefs.idleAlerts = Boolean(idleAlerts);
     if (geofenceAlerts !== undefined) prefs.geofenceAlerts = Boolean(geofenceAlerts);
+    if (routeDeviationAlerts !== undefined) prefs.routeDeviationAlerts = Boolean(routeDeviationAlerts);
+    if (lowFuelAlerts !== undefined) prefs.lowFuelAlerts = Boolean(lowFuelAlerts);
     if (offlineAlerts !== undefined) prefs.offlineAlerts = Boolean(offlineAlerts);
     if (maintenanceReminders !== undefined) prefs.maintenanceReminders = Boolean(maintenanceReminders);
 

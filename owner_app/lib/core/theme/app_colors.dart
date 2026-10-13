@@ -31,6 +31,7 @@ class AppColors {
   // Vehicle Status Palette
   static const Color statusMoving = Color(0xFF006B5D);
   static const Color statusIdle = Color(0xFFCF7F30);
+  static const Color statusStopped = Color(0xFFB54708);
   static const Color statusParked = Color(0xFF45464E);
   static const Color statusOffline = Color(0xFF8F909A);
   static const Color statusMaintenance = Color(0xFF4F46E5);

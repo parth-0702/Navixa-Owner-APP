@@ -12,6 +12,9 @@ import '../screens/profile/notification_preferences_screen.dart';
 import '../screens/profile/profile_screen.dart';
 import '../screens/profile/team_management_screen.dart';
 import '../screens/trips/trip_detail_screen.dart';
+import '../screens/trips/trips_overview_screen.dart';
+import '../screens/drivers/drivers_overview_screen.dart';
+import '../screens/reports/reports_screen.dart';
 import 'scaffold_with_nav_bar.dart';
 
 class AppRouter {
@@ -109,6 +112,18 @@ class AppRouter {
             final id = state.pathParameters['id'] ?? '';
             return TripDetailScreen(tripId: id);
           },
+        ),
+        GoRoute(
+          path: '/trips',
+          builder: (context, state) => const TripsOverviewScreen(),
+        ),
+        GoRoute(
+          path: '/drivers',
+          builder: (context, state) => const DriversOverviewScreen(),
+        ),
+        GoRoute(
+          path: '/reports',
+          builder: (context, state) => const ReportsScreen(),
         ),
         GoRoute(
           path: '/profile',

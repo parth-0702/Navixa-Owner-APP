@@ -6,11 +6,7 @@ import '../../common/app_card.dart';
 import '../../common/status_badge.dart';
 
 class VehicleCard extends StatelessWidget {
-  const VehicleCard({
-    super.key,
-    required this.vehicle,
-    required this.onTap,
-  });
+  const VehicleCard({super.key, required this.vehicle, required this.onTap});
 
   final Vehicle vehicle;
   final VoidCallback onTap;
@@ -45,17 +41,16 @@ class VehicleCard extends StatelessWidget {
                     Text(
                       vehicle.plateNumber,
                       style: theme.textTheme.labelSmall?.copyWith(
-                        color: isDark ? AppColors.darkSecondaryText : AppColors.secondaryText,
+                        color: isDark
+                            ? AppColors.darkSecondaryText
+                            : AppColors.secondaryText,
                         letterSpacing: 0.5,
                       ),
                     ),
                   ],
                 ),
               ),
-              StatusBadge(
-                status: vehicle.status,
-                isStale: vehicle.isStale,
-              ),
+              StatusBadge(status: vehicle.status, isStale: vehicle.isStale),
             ],
           ),
           const SizedBox(height: 12),
@@ -68,14 +63,18 @@ class VehicleCard extends StatelessWidget {
                 Icon(
                   Icons.location_on_outlined,
                   size: 15,
-                  color: isDark ? AppColors.darkSecondaryText : AppColors.secondaryText,
+                  color: isDark
+                      ? AppColors.darkSecondaryText
+                      : AppColors.secondaryText,
                 ),
                 const SizedBox(width: 6),
                 Expanded(
                   child: Text(
                     vehicle.lastLocation!.address,
                     style: theme.textTheme.bodySmall?.copyWith(
-                      color: isDark ? AppColors.darkSecondaryText : AppColors.secondaryText,
+                      color: isDark
+                          ? AppColors.darkSecondaryText
+                          : AppColors.secondaryText,
                     ),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
@@ -87,7 +86,8 @@ class VehicleCard extends StatelessWidget {
           ],
 
           // Stale Warning Indicator (if applicable)
-          if (vehicle.isStale && vehicle.status != VehicleStatus.maintenance) ...[
+          if (vehicle.isStale &&
+              vehicle.status != VehicleStatus.maintenance) ...[
             Container(
               margin: const EdgeInsets.only(bottom: 10),
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
@@ -98,7 +98,11 @@ class VehicleCard extends StatelessWidget {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Icon(Icons.history_rounded, size: 13, color: AppColors.warningDark),
+                  const Icon(
+                    Icons.history_rounded,
+                    size: 13,
+                    color: AppColors.warningDark,
+                  ),
                   const SizedBox(width: 5),
                   Text(
                     'Signal delayed • ${vehicle.lastUpdatedAgo.isNotEmpty ? vehicle.lastUpdatedAgo : Formatters.timeAgo(vehicle.lastLocationUpdatedAt)}',
@@ -128,7 +132,9 @@ class VehicleCard extends StatelessWidget {
                 label: 'Speed',
                 value: vehicle.status == VehicleStatus.moving
                     ? Formatters.formatSpeed(vehicle.speedKmh)
-                    : (vehicle.status == VehicleStatus.idle ? '0 (Idle)' : 'Parked'),
+                    : vehicle.status == VehicleStatus.idle
+                    ? '0 (Idle)'
+                    : vehicle.status.label,
               ),
               // Fuel
               _metricItem(
@@ -149,7 +155,32 @@ class VehicleCard extends StatelessWidget {
                 context,
                 icon: Icons.person_outline_rounded,
                 label: 'Driver',
-                value: vehicle.assignedDriver?.name.split(' ').first ?? 'Unassigned',
+                value:
+                    vehicle.assignedDriver?.name.split(' ').first ??
+                    'Unassigned',
+              ),
+            ],
+          ),
+          const SizedBox(height: 10),
+          Row(
+            children: [
+              Icon(
+                Icons.update_rounded,
+                size: 13,
+                color: isDark
+                    ? AppColors.darkSecondaryText
+                    : AppColors.secondaryText,
+              ),
+              const SizedBox(width: 5),
+              Text(
+                vehicle.lastUpdatedAgo.isNotEmpty
+                    ? vehicle.lastUpdatedAgo
+                    : Formatters.timeAgo(vehicle.lastLocationUpdatedAt),
+                style: theme.textTheme.labelSmall?.copyWith(
+                  color: isDark
+                      ? AppColors.darkSecondaryText
+                      : AppColors.secondaryText,
+                ),
               ),
             ],
           ),
@@ -175,7 +206,9 @@ class VehicleCard extends StatelessWidget {
             Icon(
               icon,
               size: 13,
-              color: isDark ? AppColors.darkSecondaryText : AppColors.secondaryText,
+              color: isDark
+                  ? AppColors.darkSecondaryText
+                  : AppColors.secondaryText,
             ),
             const SizedBox(width: 4),
             Text(
@@ -187,7 +220,9 @@ class VehicleCard extends StatelessWidget {
         const SizedBox(height: 2),
         Text(
           value,
-          style: theme.textTheme.labelMedium?.copyWith(fontWeight: FontWeight.w700),
+          style: theme.textTheme.labelMedium?.copyWith(
+            fontWeight: FontWeight.w700,
+          ),
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
         ),

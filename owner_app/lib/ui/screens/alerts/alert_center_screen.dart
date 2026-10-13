@@ -27,10 +27,12 @@ class _AlertCenterScreenState extends State<AlertCenterScreen> {
     {'id': 'long_idle', 'label': 'Long Idle'},
     {'id': 'geofence_entry', 'label': 'Geofence Entry'},
     {'id': 'geofence_exit', 'label': 'Geofence Exit'},
+    {'id': 'route_deviation', 'label': 'Route Deviation'},
+    {'id': 'low_fuel', 'label': 'Low Fuel'},
     {'id': 'device_offline', 'label': 'Device Offline'},
     {'id': 'maintenance_due', 'label': 'Maintenance'},
     {'id': 'safety_event', 'label': 'Safety Event'},
-    {'id': 'low_battery', 'label': 'Low Battery/Fuel'},
+    {'id': 'low_battery', 'label': 'Low Battery'},
   ];
 
   @override
@@ -53,7 +55,13 @@ class _AlertCenterScreenState extends State<AlertCenterScreen> {
           if (alertsProv.unreadCount > 0)
             TextButton(
               onPressed: () => alertsProv.markAllAsRead(),
-              child: const Text('Mark all read', style: TextStyle(color: AppColors.secondaryTeal, fontWeight: FontWeight.w700)),
+              child: const Text(
+                'Mark all read',
+                style: TextStyle(
+                  color: AppColors.secondaryTeal,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
             ),
           IconButton(
             icon: const Icon(Icons.refresh_rounded),
@@ -75,8 +83,12 @@ class _AlertCenterScreenState extends State<AlertCenterScreen> {
                   children: _statusTabs.map((tab) {
                     final isSelected = alertsProv.selectedStatus == tab['id'];
                     int badgeCount = 0;
-                    if (tab['id'] == 'unread') badgeCount = alertsProv.unreadCount;
-                    if (tab['id'] == 'critical') badgeCount = alertsProv.criticalCount;
+                    if (tab['id'] == 'unread') {
+                      badgeCount = alertsProv.unreadCount;
+                    }
+                    if (tab['id'] == 'critical') {
+                      badgeCount = alertsProv.criticalCount;
+                    }
 
                     return Padding(
                       padding: const EdgeInsets.only(right: 8),
@@ -90,11 +102,16 @@ class _AlertCenterScreenState extends State<AlertCenterScreen> {
                             if (badgeCount > 0) ...[
                               const SizedBox(width: 6),
                               Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 6,
+                                  vertical: 2,
+                                ),
                                 decoration: BoxDecoration(
                                   color: tab['id'] == 'critical'
                                       ? AppColors.error
-                                      : (isSelected ? Colors.white : AppColors.secondaryTeal),
+                                      : (isSelected
+                                            ? Colors.white
+                                            : AppColors.secondaryTeal),
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                                 child: Text(
@@ -104,7 +121,9 @@ class _AlertCenterScreenState extends State<AlertCenterScreen> {
                                     fontWeight: FontWeight.w700,
                                     color: tab['id'] == 'critical'
                                         ? Colors.white
-                                        : (isSelected ? AppColors.secondaryTeal : Colors.white),
+                                        : (isSelected
+                                              ? AppColors.secondaryTeal
+                                              : Colors.white),
                                   ),
                                 ),
                               ),
@@ -113,11 +132,16 @@ class _AlertCenterScreenState extends State<AlertCenterScreen> {
                         ),
                         selectedColor: AppColors.primaryNavy,
                         labelStyle: TextStyle(
-                          color: isSelected ? Colors.white : AppColors.primaryText,
-                          fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
+                          color: isSelected
+                              ? Colors.white
+                              : AppColors.primaryText,
+                          fontWeight: isSelected
+                              ? FontWeight.w700
+                              : FontWeight.w500,
                           fontSize: 13,
                         ),
-                        onSelected: (_) => alertsProv.setFilterStatus(tab['id']!),
+                        onSelected: (_) =>
+                            alertsProv.setFilterStatus(tab['id']!),
                       ),
                     );
                   }).toList(),
@@ -127,7 +151,14 @@ class _AlertCenterScreenState extends State<AlertCenterScreen> {
                 // Type Filter Dropdown
                 Row(
                   children: [
-                    const Text('Filter by Type:', style: TextStyle(fontSize: 12, color: AppColors.secondaryText, fontWeight: FontWeight.w600)),
+                    const Text(
+                      'Filter by Type:',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: AppColors.secondaryText,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
                     const SizedBox(width: 8),
                     Expanded(
                       child: DropdownButtonHideUnderline(
@@ -135,11 +166,17 @@ class _AlertCenterScreenState extends State<AlertCenterScreen> {
                           value: alertsProv.selectedType,
                           isDense: true,
                           isExpanded: true,
-                          icon: const Icon(Icons.arrow_drop_down, color: AppColors.secondaryTeal),
+                          icon: const Icon(
+                            Icons.arrow_drop_down,
+                            color: AppColors.secondaryTeal,
+                          ),
                           items: _typeOptions.map((opt) {
                             return DropdownMenuItem<String?>(
                               value: opt['id'],
-                              child: Text(opt['label']!, style: const TextStyle(fontSize: 13)),
+                              child: Text(
+                                opt['label']!,
+                                style: const TextStyle(fontSize: 13),
+                              ),
                             );
                           }).toList(),
                           onChanged: (val) => alertsProv.setFilterType(val),
@@ -175,11 +212,17 @@ class _AlertCenterScreenState extends State<AlertCenterScreen> {
                 if (prov.alerts.isEmpty) {
                   return EmptyState(
                     title: 'No Alerts Found',
-                    message: prov.selectedStatus != 'all' || prov.selectedType != null
+                    message:
+                        prov.selectedStatus != 'all' ||
+                            prov.selectedType != null
                         ? 'There are no alerts matching your selected filter criteria.'
                         : 'Your fleet is running smoothly. No operational alerts have been reported.',
                     icon: Icons.check_circle_outline_rounded,
-                    actionLabel: prov.selectedStatus != 'all' || prov.selectedType != null ? 'Clear Filters' : null,
+                    actionLabel:
+                        prov.selectedStatus != 'all' ||
+                            prov.selectedType != null
+                        ? 'Clear Filters'
+                        : null,
                     onAction: () {
                       prov.setFilterStatus('all');
                       prov.setFilterType(null);
@@ -194,25 +237,43 @@ class _AlertCenterScreenState extends State<AlertCenterScreen> {
                     padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
                     children: [
                       if (prov.today.isNotEmpty) ...[
-                        _buildSectionHeader(context, 'TODAY', prov.today.length),
-                        ...prov.today.map((a) => Padding(
-                              padding: const EdgeInsets.only(bottom: 12),
-                              child: AlertCard(alert: a),
-                            )),
+                        _buildSectionHeader(
+                          context,
+                          'TODAY',
+                          prov.today.length,
+                        ),
+                        ...prov.today.map(
+                          (a) => Padding(
+                            padding: const EdgeInsets.only(bottom: 12),
+                            child: AlertCard(alert: a),
+                          ),
+                        ),
                       ],
                       if (prov.yesterday.isNotEmpty) ...[
-                        _buildSectionHeader(context, 'YESTERDAY', prov.yesterday.length),
-                        ...prov.yesterday.map((a) => Padding(
-                              padding: const EdgeInsets.only(bottom: 12),
-                              child: AlertCard(alert: a),
-                            )),
+                        _buildSectionHeader(
+                          context,
+                          'YESTERDAY',
+                          prov.yesterday.length,
+                        ),
+                        ...prov.yesterday.map(
+                          (a) => Padding(
+                            padding: const EdgeInsets.only(bottom: 12),
+                            child: AlertCard(alert: a),
+                          ),
+                        ),
                       ],
                       if (prov.earlier.isNotEmpty) ...[
-                        _buildSectionHeader(context, 'EARLIER', prov.earlier.length),
-                        ...prov.earlier.map((a) => Padding(
-                              padding: const EdgeInsets.only(bottom: 12),
-                              child: AlertCard(alert: a),
-                            )),
+                        _buildSectionHeader(
+                          context,
+                          'EARLIER',
+                          prov.earlier.length,
+                        ),
+                        ...prov.earlier.map(
+                          (a) => Padding(
+                            padding: const EdgeInsets.only(bottom: 12),
+                            child: AlertCard(alert: a),
+                          ),
+                        ),
                       ],
                     ],
                   ),
@@ -248,7 +309,11 @@ class _AlertCenterScreenState extends State<AlertCenterScreen> {
             ),
             child: Text(
               '$count',
-              style: const TextStyle(fontSize: 10, fontWeight: FontWeight.w700, color: AppColors.secondaryText),
+              style: const TextStyle(
+                fontSize: 10,
+                fontWeight: FontWeight.w700,
+                color: AppColors.secondaryText,
+              ),
             ),
           ),
         ],

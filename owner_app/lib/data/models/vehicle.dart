@@ -5,6 +5,7 @@ import 'driver.dart';
 enum VehicleStatus {
   moving,
   idle,
+  stopped,
   parked,
   offline,
   maintenance,
@@ -16,6 +17,8 @@ enum VehicleStatus {
         return VehicleStatus.moving;
       case 'idle':
         return VehicleStatus.idle;
+      case 'stopped':
+        return VehicleStatus.stopped;
       case 'parked':
         return VehicleStatus.parked;
       case 'offline':
@@ -35,6 +38,8 @@ enum VehicleStatus {
         return 'Moving';
       case VehicleStatus.idle:
         return 'Idle';
+      case VehicleStatus.stopped:
+        return 'Stopped';
       case VehicleStatus.parked:
         return 'Parked';
       case VehicleStatus.offline:
@@ -52,6 +57,8 @@ enum VehicleStatus {
         return AppColors.statusMoving;
       case VehicleStatus.idle:
         return AppColors.statusIdle;
+      case VehicleStatus.stopped:
+        return AppColors.statusStopped;
       case VehicleStatus.parked:
         return AppColors.statusParked;
       case VehicleStatus.offline:
@@ -68,6 +75,8 @@ enum VehicleStatus {
       case VehicleStatus.moving:
         return AppColors.successSoft;
       case VehicleStatus.idle:
+        return AppColors.warningSoft;
+      case VehicleStatus.stopped:
         return AppColors.warningSoft;
       case VehicleStatus.parked:
         return AppColors.surfaceMuted;
@@ -86,6 +95,8 @@ enum VehicleStatus {
         return Icons.navigation_rounded;
       case VehicleStatus.idle:
         return Icons.pause_circle_filled_rounded;
+      case VehicleStatus.stopped:
+        return Icons.stop_circle_rounded;
       case VehicleStatus.parked:
         return Icons.local_parking_rounded;
       case VehicleStatus.offline:
@@ -122,7 +133,8 @@ class VehicleLocation {
     if (json['latitude'] != null && json['longitude'] != null) {
       lat = (json['latitude'] as num).toDouble();
       lng = (json['longitude'] as num).toDouble();
-    } else if (json['coordinates'] is List && (json['coordinates'] as List).length >= 2) {
+    } else if (json['coordinates'] is List &&
+        (json['coordinates'] as List).length >= 2) {
       final coords = json['coordinates'] as List;
       lng = (coords[0] as num).toDouble();
       lat = (coords[1] as num).toDouble();
@@ -215,9 +227,13 @@ class Vehicle {
 
   factory Vehicle.fromJson(Map<String, dynamic> json) {
     VehicleLocation? loc;
-    if (json['lastKnownLocation'] != null && json['lastKnownLocation'] is Map<String, dynamic>) {
-      loc = VehicleLocation.fromJson(json['lastKnownLocation'] as Map<String, dynamic>);
-    } else if (json['location'] != null && json['location'] is Map<String, dynamic>) {
+    if (json['lastKnownLocation'] != null &&
+        json['lastKnownLocation'] is Map<String, dynamic>) {
+      loc = VehicleLocation.fromJson(
+        json['lastKnownLocation'] as Map<String, dynamic>,
+      );
+    } else if (json['location'] != null &&
+        json['location'] is Map<String, dynamic>) {
       loc = VehicleLocation.fromJson(json['location'] as Map<String, dynamic>);
     } else if (json['latitude'] != null && json['longitude'] != null) {
       loc = VehicleLocation.fromJson(json);
@@ -229,10 +245,16 @@ class Vehicle {
     }
 
     DriverSummary? driver;
-    if (json['assignedDriver'] != null && json['assignedDriver'] is Map<String, dynamic>) {
-      driver = DriverSummary.fromJson(json['assignedDriver'] as Map<String, dynamic>);
-    } else if (json['assignedDriverId'] != null && json['assignedDriverId'] is Map<String, dynamic>) {
-      driver = DriverSummary.fromJson(json['assignedDriverId'] as Map<String, dynamic>);
+    if (json['assignedDriver'] != null &&
+        json['assignedDriver'] is Map<String, dynamic>) {
+      driver = DriverSummary.fromJson(
+        json['assignedDriver'] as Map<String, dynamic>,
+      );
+    } else if (json['assignedDriverId'] != null &&
+        json['assignedDriverId'] is Map<String, dynamic>) {
+      driver = DriverSummary.fromJson(
+        json['assignedDriverId'] as Map<String, dynamic>,
+      );
     }
 
     return Vehicle(
@@ -244,7 +266,10 @@ class Vehicle {
       model: json['model']?.toString() ?? '',
       year: (json['year'] as num?)?.toInt() ?? 2024,
       status: VehicleStatus.fromString(json['status']?.toString()),
-      speedKmh: (json['speedKmh'] as num?)?.toDouble() ?? (json['speed'] as num?)?.toDouble() ?? 0.0,
+      speedKmh:
+          (json['speedKmh'] as num?)?.toDouble() ??
+          (json['speed'] as num?)?.toDouble() ??
+          0.0,
       heading: (json['heading'] as num?)?.toDouble() ?? 0.0,
       ignition: json['ignition'] ?? false,
       fuelType: json['fuelType']?.toString() ?? 'diesel',
@@ -258,7 +283,9 @@ class Vehicle {
       lastUpdatedAgo: json['lastUpdatedAgo']?.toString() ?? '',
       isStale: json['isStale'] ?? false,
       assignedDriver: driver,
-      openAlertsCount: (json['openAlerts'] is List) ? (json['openAlerts'] as List).length : 0,
+      openAlertsCount: (json['openAlerts'] is List)
+          ? (json['openAlerts'] as List).length
+          : 0,
     );
   }
 
@@ -292,7 +319,8 @@ class Vehicle {
       todayDistanceKm: todayDistanceKm,
       hasHardwareGps: hasHardwareGps,
       lastLocation: lastLocation ?? this.lastLocation,
-      lastLocationUpdatedAt: lastLocationUpdatedAt ?? this.lastLocationUpdatedAt,
+      lastLocationUpdatedAt:
+          lastLocationUpdatedAt ?? this.lastLocationUpdatedAt,
       lastUpdatedAgo: lastUpdatedAgo,
       isStale: isStale ?? this.isStale,
       assignedDriver: assignedDriver,

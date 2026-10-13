@@ -9,6 +9,8 @@ class NotificationPreference {
     this.overspeedAlerts = true,
     this.idleAlerts = true,
     this.geofenceAlerts = true,
+    this.routeDeviationAlerts = true,
+    this.lowFuelAlerts = true,
     this.offlineAlerts = true,
     this.maintenanceReminders = true,
   });
@@ -22,6 +24,8 @@ class NotificationPreference {
   final bool overspeedAlerts;
   final bool idleAlerts;
   final bool geofenceAlerts;
+  final bool routeDeviationAlerts;
+  final bool lowFuelAlerts;
   final bool offlineAlerts;
   final bool maintenanceReminders;
 
@@ -36,6 +40,8 @@ class NotificationPreference {
       overspeedAlerts: json['overspeedAlerts'] ?? true,
       idleAlerts: json['idleAlerts'] ?? true,
       geofenceAlerts: json['geofenceAlerts'] ?? true,
+      routeDeviationAlerts: json['routeDeviationAlerts'] ?? true,
+      lowFuelAlerts: json['lowFuelAlerts'] ?? true,
       offlineAlerts: json['offlineAlerts'] ?? true,
       maintenanceReminders: json['maintenanceReminders'] ?? true,
     );
@@ -52,6 +58,8 @@ class NotificationPreference {
       'overspeedAlerts': overspeedAlerts,
       'idleAlerts': idleAlerts,
       'geofenceAlerts': geofenceAlerts,
+      'routeDeviationAlerts': routeDeviationAlerts,
+      'lowFuelAlerts': lowFuelAlerts,
       'offlineAlerts': offlineAlerts,
       'maintenanceReminders': maintenanceReminders,
     };
@@ -67,6 +75,8 @@ class NotificationPreference {
     bool? overspeedAlerts,
     bool? idleAlerts,
     bool? geofenceAlerts,
+    bool? routeDeviationAlerts,
+    bool? lowFuelAlerts,
     bool? offlineAlerts,
     bool? maintenanceReminders,
   }) {
@@ -80,6 +90,8 @@ class NotificationPreference {
       overspeedAlerts: overspeedAlerts ?? this.overspeedAlerts,
       idleAlerts: idleAlerts ?? this.idleAlerts,
       geofenceAlerts: geofenceAlerts ?? this.geofenceAlerts,
+      routeDeviationAlerts: routeDeviationAlerts ?? this.routeDeviationAlerts,
+      lowFuelAlerts: lowFuelAlerts ?? this.lowFuelAlerts,
       offlineAlerts: offlineAlerts ?? this.offlineAlerts,
       maintenanceReminders: maintenanceReminders ?? this.maintenanceReminders,
     );

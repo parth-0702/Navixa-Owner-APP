@@ -7,6 +7,7 @@ class StatusCounts {
     this.total = 0,
     this.moving = 0,
     this.idle = 0,
+    this.stopped = 0,
     this.parked = 0,
     this.offline = 0,
     this.maintenance = 0,
@@ -15,6 +16,7 @@ class StatusCounts {
   final int total;
   final int moving;
   final int idle;
+  final int stopped;
   final int parked;
   final int offline;
   final int maintenance;
@@ -24,6 +26,7 @@ class StatusCounts {
       total: (json['total'] as num?)?.toInt() ?? 0,
       moving: (json['moving'] as num?)?.toInt() ?? 0,
       idle: (json['idle'] as num?)?.toInt() ?? 0,
+      stopped: (json['stopped'] as num?)?.toInt() ?? 0,
       parked: (json['parked'] as num?)?.toInt() ?? 0,
       offline: (json['offline'] as num?)?.toInt() ?? 0,
       maintenance: (json['maintenance'] as num?)?.toInt() ?? 0,
@@ -52,7 +55,9 @@ class CriticalAlertBanner {
       title: json['title']?.toString() ?? 'Critical Attention Needed',
       description: json['description']?.toString() ?? '',
       vehicleName: json['vehicleName']?.toString() ?? 'Fleet Vehicle',
-      timestamp: DateTime.tryParse(json['timestamp']?.toString() ?? '') ?? DateTime.now(),
+      timestamp:
+          DateTime.tryParse(json['timestamp']?.toString() ?? '') ??
+          DateTime.now(),
     );
   }
 }
@@ -83,7 +88,8 @@ class OverviewData {
   final List<Trip> recentTrips;
 
   factory OverviewData.fromJson(Map<String, dynamic> json) {
-    final statusCountsJson = json['statusCounts'] as Map<String, dynamic>? ?? {};
+    final statusCountsJson =
+        json['statusCounts'] as Map<String, dynamic>? ?? {};
     final bannerJson = json['criticalAlertBanner'] as Map<String, dynamic>?;
 
     List<Vehicle> mapVehicles = [];
@@ -110,11 +116,15 @@ class OverviewData {
     return OverviewData(
       greeting: json['greeting']?.toString() ?? 'Good day',
       organizationName: json['organizationName']?.toString() ?? 'Navixa Fleet',
-      lastUpdated: DateTime.tryParse(json['lastUpdated']?.toString() ?? '') ?? DateTime.now(),
+      lastUpdated:
+          DateTime.tryParse(json['lastUpdated']?.toString() ?? '') ??
+          DateTime.now(),
       unreadCount: (json['unreadCount'] as num?)?.toInt() ?? 0,
       criticalAlertsCount: (json['criticalAlertsCount'] as num?)?.toInt() ?? 0,
       statusCounts: StatusCounts.fromJson(statusCountsJson),
-      criticalAlertBanner: bannerJson != null ? CriticalAlertBanner.fromJson(bannerJson) : null,
+      criticalAlertBanner: bannerJson != null
+          ? CriticalAlertBanner.fromJson(bannerJson)
+          : null,
       fleetMapPreview: mapVehicles,
       recentAlerts: alerts,
       recentTrips: trips,

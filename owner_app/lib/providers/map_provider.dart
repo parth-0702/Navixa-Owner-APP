@@ -9,8 +9,8 @@ class MapProvider extends ChangeNotifier {
   MapProvider({
     required FleetRepository fleetRepository,
     required SocketService socketService,
-  })  : _fleetRepository = fleetRepository,
-        _socketService = socketService {
+  }) : _fleetRepository = fleetRepository,
+       _socketService = socketService {
     _initSocketListeners();
   }
 
@@ -50,7 +50,9 @@ class MapProvider extends ChangeNotifier {
   StreamSubscription? _locationSubscription;
 
   void _initSocketListeners() {
-    _locationSubscription = _socketService.onVehicleLocationUpdated.listen((data) {
+    _locationSubscription = _socketService.onVehicleLocationUpdated.listen((
+      data,
+    ) {
       final vehicleId = data['vehicleId']?.toString() ?? data['id']?.toString();
       if (vehicleId == null) return;
 
@@ -90,7 +92,8 @@ class MapProvider extends ChangeNotifier {
         final q = _searchFilter.toLowerCase();
         final matchName = v.displayName.toLowerCase().contains(q);
         final matchPlate = v.plateNumber.toLowerCase().contains(q);
-        final matchDriver = v.assignedDriver?.name.toLowerCase().contains(q) ?? false;
+        final matchDriver =
+            v.assignedDriver?.name.toLowerCase().contains(q) ?? false;
         if (!matchName && !matchPlate && !matchDriver) return false;
       }
       return true;
@@ -149,7 +152,8 @@ class MapProvider extends ChangeNotifier {
     _isPlaying = true;
     _playbackTimer?.cancel();
     _playbackTimer = Timer.periodic(const Duration(milliseconds: 600), (timer) {
-      if (_selectedTrip == null || _playbackIndex >= _selectedTrip!.polyline.length - 1) {
+      if (_selectedTrip == null ||
+          _playbackIndex >= _selectedTrip!.polyline.length - 1) {
         stopPlayback();
       } else {
         _playbackIndex += 1;
@@ -169,6 +173,14 @@ class MapProvider extends ChangeNotifier {
     _playbackTimer?.cancel();
     _isPlaying = false;
     _playbackIndex = 0;
+    notifyListeners();
+  }
+
+  void seekPlayback(int index) {
+    if (_selectedTrip == null || _selectedTrip!.polyline.isEmpty) return;
+    _playbackTimer?.cancel();
+    _isPlaying = false;
+    _playbackIndex = index.clamp(0, _selectedTrip!.polyline.length - 1);
     notifyListeners();
   }
 

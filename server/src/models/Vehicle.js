@@ -47,7 +47,7 @@ const vehicleSchema = new mongoose.Schema(
     year: { type: Number, default: 2024 },
     status: {
       type: String,
-      enum: ['moving', 'idle', 'parked', 'offline', 'maintenance', 'available'],
+      enum: ['moving', 'idle', 'stopped', 'parked', 'offline', 'maintenance', 'available'],
       default: 'parked',
       index: true,
     },

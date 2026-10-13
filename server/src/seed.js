@@ -52,7 +52,7 @@ async function seedDatabase() {
     console.log(`✅ Created Organization: ${org.name} (${org._id})`);
 
     // 2. Create Users (Owner, Manager, Viewer)
-    const ownerPasswordHash = await bcrypt.hash('OwnerPass123!', 10);
+    const ownerPasswordHash = await bcrypt.hash('ManagerPass123!', 10);
     const managerPasswordHash = await bcrypt.hash('ManagerPass123!', 10);
     const viewerPasswordHash = await bcrypt.hash('ViewerPass123!', 10);
 
@@ -610,7 +610,7 @@ async function seedDatabase() {
     console.log('\n🎉 Development seed completed successfully!');
     console.log('--------------------------------------------------');
     console.log('Organization: Apex Logistics Fleet (Code: APEX)');
-    console.log('Owner:   owner@navixa.com   / OwnerPass123!');
+    console.log('Owner:   owner@navixa.com   / ManagerPass123!');
     console.log('Manager: manager@navixa.com / ManagerPass123!');
     console.log('Viewer:  viewer@navixa.com  / ViewerPass123!');
     console.log('Vehicles: 6 (Moving, Idle, Parked, Offline, Alert, Maintenance)');

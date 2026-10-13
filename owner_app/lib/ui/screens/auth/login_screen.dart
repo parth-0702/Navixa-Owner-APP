@@ -319,7 +319,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               ActionChip(
                                 label: const Text('Owner'),
                                 avatar: const Icon(Icons.shield_rounded, size: 14),
-                                onPressed: () => _autofillDemo('owner@navixa.com', 'OwnerPass123!'),
+                                onPressed: () => _autofillDemo('owner@navixa.com', 'ManagerPass123!'),
                               ),
                               ActionChip(
                                 label: const Text('Manager'),
